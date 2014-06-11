@@ -79,11 +79,12 @@ wxBoxSizer *flowMMI::getPanel()
 
 void flowMMI::addPost(uint64_t id, wxString date, wxString autor, wxString content)
 {
-    m_pPalmipede->Append(wxString("<body bgcolor=#ffffff>")
+    m_pPalmipede->Insert(wxString("<body bgcolor=#ffffff>")
                          + "<b>[" + date.substr(8, 2) + ":" + date.substr(10, 2) + ":" + date.substr(12, 2) + "]</b>"
                          + " : " + autor
                          + "  -" + content
-                         + "</body>");
+                         + "</body>",
+                         0);
 }
 
 void flowMMI::OnLink(wxHtmlLinkEvent &event)
