@@ -1,7 +1,7 @@
 #include "MMI/flowMMI.h"
-#include <wx/grid.h>
 #include <wx/xml/xml.h>
 #include <wx/protocol/http.h>
+#include <wx/utils.h>
 
 flowMMI::flowMMI(wxFrame *theParent)
 {
@@ -67,6 +67,7 @@ void flowMMI::refreshMMI()
 
     http.Close();
     wxDELETE(httpStream);
+    m_pPalmipede->Refresh();
 }
 
 wxBoxSizer *flowMMI::getPanel()
@@ -78,20 +79,24 @@ wxBoxSizer *flowMMI::getPanel()
 
 void flowMMI::addPost(uint64_t id, wxString date, wxString autor, wxString content)
 {
-/*
- *     m_pPalmipede->AppendText(date.substr(8, 2) + ":" + date.substr(10, 2) + ":" + date.substr(12, 2)
-                               + " : " + autor
-                               + "  -" + content
-                               + "\n");
-  */
+    m_pPalmipede->Append(wxString("<body bgcolor=#ffffff>")
+                         + "<b>[" + date.substr(8, 2) + ":" + date.substr(10, 2) + ":" + date.substr(12, 2) + "]</b>"
+                         + " : " + autor
+                         + "  -" + content
+                         + "</body>");
+}
+
+void flowMMI::OnLink(wxHtmlLinkEvent &event)
+{
+    wxString target = event.GetLinkInfo().GetHref();
+    wxLaunchDefaultBrowser(target);
 }
 
 void flowMMI::createPanel()
 {
-    m_pPanel = new wxBoxSizer(wxHORIZONTAL);
-    m_pPalmipede = new palmipede(m_pParent,
-                                 wxID_ANY);
-
-    m_pPanel->Add(m_pPalmipede, 0, wxALL | wxEXPAND, 2);
+    m_pPanel = new wxBoxSizer(wxVERTICAL);
+    m_pPalmipede = new wxSimpleHtmlListBox(m_pParent, ID_FLOW);
+    m_pPanel->Add(m_pPalmipede, 1, wxALL | wxEXPAND, 2);
+    m_pPalmipede->Bind(wxEVT_HTML_LINK_CLICKED, &flowMMI::OnLink, this, ID_FLOW);
     refreshMMI();
 }

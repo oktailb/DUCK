@@ -29,5 +29,4 @@ void editFormMMI::createPanel()
     m_pPanel->Add(pTheDramarScene   , 1, wxALL | wxEXPAND, 2);
     m_pPanel->Add(text3             , 0, wxALL | wxEXPAND, 2);
     m_pPanel->Add(pTheNSFW          , 2, wxALL | wxEXPAND, 2);
-    m_pPanel->SetMinSize(-1, 100);
 }

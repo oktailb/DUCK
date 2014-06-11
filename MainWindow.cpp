@@ -9,7 +9,7 @@ END_EVENT_TABLE()
 
 MainWindow::MainWindow()
     :
-    wxFrame(NULL, -1 ,_T("\\_x<~ Da Ultimate CoinKoin"))
+    wxFrame(NULL, -1 ,_T("\\_x<~ Da Ultimate Coin Koin"), wxDefaultPosition, wxSize(800, 600))
 {
     m_pTimer = new wxTimer(this,ID_TIMER);
 }
@@ -28,10 +28,10 @@ void MainWindow::createPanel()
     m_pSide       = new sideMMI(this);
 
     m_pTimer->Start(30000);
-    UpSizer->Add(m_pSide->getPanel(), 0, wxALL | wxEXPAND, 2);
-    UpSizer->Add(m_pFlow->getPanel(), 0, wxALL | wxEXPAND, 2);
+    UpSizer->Add(m_pSide->getPanel(), 1, wxALL | wxEXPAND, 2);
+    UpSizer->Add(m_pFlow->getPanel(), 42, wxALL | wxEXPAND, 2);
+    MainSizer->Add(UpSizer, 42, wxALL | wxEXPAND, 2);
     MainSizer->Add(m_pEditForm->getPanel(), 0, wxBOTTOM |  wxALIGN_BOTTOM | wxEXPAND, 2);
-    MainSizer->Add(UpSizer, 0, wxALL | wxEXPAND, 2);
 
     this->SetSizer(MainSizer);
 }
