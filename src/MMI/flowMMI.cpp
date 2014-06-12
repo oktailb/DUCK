@@ -1,6 +1,7 @@
 #include "MMI/flowMMI.h"
 #include <wx/xml/xml.h>
 #include <wx/protocol/http.h>
+#include <wx/url.h>
 #include <wx/utils.h>
 
 flowMMI::flowMMI(wxFrame *theParent)
@@ -12,14 +13,14 @@ flowMMI::flowMMI(wxFrame *theParent)
 
 void flowMMI::refreshMMI()
 {
-    wxString link;
-    wxHTTP http;
+    wxURL * myUrl = new wxURL();
 
-    http.SetTimeout(6);
-    http.Connect(_T("linuxfr.org"));
-    wxInputStream *httpStream = http.GetInputStream(_T("/board/index.xml"));
+    //myUrl->SetDefaultProxy("http://clprox.bull.fr:80");
+    myUrl->SetURL("http://linuxfr.org/board/index.xml");
 
-    if (http.GetError() == wxPROTO_NOERR)
+    wxInputStream *httpStream = myUrl->GetInputStream();
+
+    if (myUrl->GetError() != wxURL_PROTOERR)
     {
         // will crash here, if xml content is not formatted PERFECTLY
         wxXmlDocument xml(*httpStream);
@@ -65,7 +66,6 @@ void flowMMI::refreshMMI()
     else
         wxMessageBox(_T("Can't connect!"));
 
-    http.Close();
     wxDELETE(httpStream);
     m_pPalmipede->Refresh();
 }
