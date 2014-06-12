@@ -15,7 +15,8 @@ SOURCES +=  main.cpp \
             src/MMI/tribunePanelMMI.cpp \
             src/MMI/filtersPanelMMI.cpp \
             src/MMI/pluginsPanelMMI.cpp \
-            src/MMI/controlPanelMMI.cpp
+            src/MMI/controlPanelMMI.cpp \
+            src/util/iniManager.cpp
 
 
 HEADERS += \
@@ -27,4 +28,5 @@ HEADERS += \
     inc/MMI/tribunePanelMMI.h \
     inc/MMI/filtersPanelMMI.h \
     inc/MMI/pluginsPanelMMI.h \
-    inc/MMI/controlPanelMMI.h
+    inc/MMI/controlPanelMMI.h \
+    inc/util/iniManager.h

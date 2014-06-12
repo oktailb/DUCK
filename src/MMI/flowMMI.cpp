@@ -3,20 +3,22 @@
 #include <wx/protocol/http.h>
 #include <wx/url.h>
 #include <wx/utils.h>
+#include "util/iniManager.h"
 
 flowMMI::flowMMI(wxFrame *theParent)
 {
     m_pPanel = NULL;
     m_pParent = theParent;
-    lastId = 0;
+    m_i64LastId = 0;
+    m_pIniManager = new iniManager("./res/config/config.ini");
 }
 
-void flowMMI::refreshMMI()
+void flowMMI::updateBouchot(wxString base, wxString resource)
 {
     wxURL * myUrl = new wxURL();
 
-    //myUrl->SetDefaultProxy("http://clprox.bull.fr:80");
-    myUrl->SetURL("http://linuxfr.org/board/index.xml");
+    myUrl->SetDefaultProxy(m_pIniManager->getParam("proxy"));
+    myUrl->SetURL("http://" + base + "/" +  resource);
 
     wxInputStream *httpStream = myUrl->GetInputStream();
 
@@ -56,17 +58,21 @@ void flowMMI::refreshMMI()
                 }
                 if (id > maxId)
                     maxId = id;
-                if (id > lastId)
+                if (id > m_i64LastId)
                     addPost(id, date, autor, message);
             }
             node = node->GetNext();
         }
-        lastId = maxId;
+        m_i64LastId = maxId;
     }
     else
         wxMessageBox(_T("Can't connect!"));
-
     wxDELETE(httpStream);
+}
+
+void flowMMI::refreshMMI()
+{
+    updateBouchot("linuxfr.org", "board/index.xml");
     m_pPalmipede->Refresh();
 }
 
