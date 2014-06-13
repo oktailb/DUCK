@@ -2,14 +2,17 @@
 
 iniManager::iniManager(wxString input)
 {
-    m_fInput = new wxTextFile(input);
-    wxString str;
-    for ( str = m_fInput->GetFirstLine(); !m_fInput->Eof(); str = m_fInput->GetNextLine() )
+    m_fInput = new wxTextFile();
+    if (m_fInput->Open(input) != wxInvalidOffset)
     {
-        str.Trim();
-        wxString param = str.BeforeFirst('=');
-        wxString value = str.AfterFirst('=');
-        m_mData.insert(std::make_pair<wxString, wxString>(param, value));
+        wxString str;
+        for ( str = m_fInput->GetFirstLine(); !m_fInput->Eof(); str = m_fInput->GetNextLine() )
+        {
+            str.Trim();
+            wxString param = str.BeforeFirst('=');
+            wxString value = str.AfterFirst('=');
+            m_mData.insert(std::make_pair<wxString, wxString>(param, value));
+        }
     }
 }
 

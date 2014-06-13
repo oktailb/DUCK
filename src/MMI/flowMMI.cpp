@@ -10,14 +10,14 @@ flowMMI::flowMMI(wxFrame *theParent)
     m_pPanel = NULL;
     m_pParent = theParent;
     m_i64LastId = 0;
-    m_pIniManager = new iniManager("./res/config/config.ini");
+    m_pIniManager = new iniManager("./res/conf/config.ini");
 }
 
 void flowMMI::updateBouchot(wxString base, wxString resource)
 {
+    wxString proxy = m_pIniManager->getParam("proxy");
+    wxURL::SetDefaultProxy(proxy);
     wxURL * myUrl = new wxURL();
-
-    myUrl->SetDefaultProxy(m_pIniManager->getParam("proxy"));
     myUrl->SetURL("http://" + base + "/" +  resource);
 
     wxInputStream *httpStream = myUrl->GetInputStream();
