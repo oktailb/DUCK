@@ -5,6 +5,8 @@
 #include <stdint.h>
 #include <wx/htmllbox.h>
 #include "util/iniManager.h"
+#include "core/bouchot.h"
+#include <vector>
 
 class flowMMI
 {
@@ -21,7 +23,11 @@ public:
     void            clearMMI();
 
     wxBoxSizer *    getPanel();
-    void            addPost(uint64_t id, wxString date, wxString autor, wxString content);
+    void            addPost(uint64_t id,
+                            wxString date,
+                            wxString autor,
+                            wxString content,
+                            wxString fg, wxString bg, wxString clock, wxString norloge, wxString login, wxString answer);
 private:
     wxBoxSizer *                                        m_pPanel;
     wxFrame *                                           m_pParent;
@@ -29,6 +35,7 @@ private:
     u_int64_t                                           m_i64LastId;
     iniManager *                                        m_pIniManager;
     std::map<wxString, std::pair<wxString, wxString> >  m_mData;
+    std::vector<bouchot*>                               m_vBouchots;
 
     void            createPanel();
     void            OnLink(wxHtmlLinkEvent &event);
