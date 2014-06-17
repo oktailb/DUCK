@@ -31,7 +31,7 @@ void flowMMI::refreshMMI()
         bouchot::t_post next;
         u_int64_t id = 0;
         while((id = m_vBouchots[i]->getNextPost(next)) != 0)
-            addPost(id, next.norloge, next.name, next.post,
+            addPost(id, next.norloge, (next.name.size() == 0)?next.info:next.name, next.post,
                     m_vBouchots[i]->fg(),
                     m_vBouchots[i]->bg(),
                     m_vBouchots[i]->clock(),

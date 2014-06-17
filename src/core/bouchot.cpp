@@ -82,11 +82,18 @@ void bouchot::refresh()
                         message = post->GetNodeContent();
 
                         wxRegEx reTotoz;
-                        bool ok = reTotoz.Compile("[:([[:alnum:]_ ]+)]");
+                        bool ok = reTotoz.Compile("[:([a-zA-Z0-9]*)]");
+                        wxRegEx reNorloge;
+                        ok = reNorloge.Compile("([0-9]?[0-9]?:[0-9]?[0-9]?:[0-9]?[0-9]?)");
 
-                        size_t count = reTotoz.ReplaceAll(&message, "<img src='http://totoz.eu/\\1'>");
+                        size_t count = reTotoz.ReplaceAll(&message, "<img src='http://totoz.eu/img/\\0'>");
+                        count = reNorloge.ReplaceAll(&message, "<a>\\0</a>");
                         count = count;
 
+                        if (reTotoz.GetMatch(message, 0) == "totoz")
+                        {
+                            count = count;
+                        }
                     }
                     else if (post->GetName() == "login")
                     {
@@ -100,8 +107,8 @@ void bouchot::refresh()
             node = node->GetNext();
         }
     }
-    else
-        wxMessageBox(_T("Can't connect!"));
+    //else
+        //wxMessageBox(_T("Can't connect!"));
     if (firstCall)
     {
         m_iNext = m_mData.begin();
