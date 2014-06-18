@@ -31,13 +31,13 @@ bouchot::~bouchot()
     delete m_pConfigFile;
 }
 
-uint64_t bouchot::getNextPost(t_post &ret)
+int64_t bouchot::getNextPost(t_post &ret)
 {
     m_iNext++;
     if (m_iNext == m_mData.end())
     {
         m_iNext--;
-        return 0;
+        return -1;
     }
     m_iNext->second.used = true;
     ret = m_iNext->second;
@@ -81,19 +81,19 @@ void bouchot::refresh()
                     {
                         message = post->GetNodeContent();
 
-                        wxRegEx reTotoz;
-                        bool ok = reTotoz.Compile("[:([a-zA-Z0-9]*)]");
-                        wxRegEx reNorloge;
-                        ok = reNorloge.Compile("([0-9]?[0-9]?:[0-9]?[0-9]?:[0-9]?[0-9]?)");
+                        //wxRegEx reTotoz;
+                        //bool ok = reTotoz.Compile("[:([a-zA-Z0-9]*)]");
+                        //wxRegEx reNorloge;
+                        //ok = reNorloge.Compile("{{{ (([01]?[0-9])|(2[0-3])):[0-5][0-9](:[0-5][0-9])?(\^[0-9]|¹|²|³)?(@[0-9A-Za-z]+)? }}}");
 
-                        size_t count = reTotoz.ReplaceAll(&message, "<img src='http://totoz.eu/img/\\0'>");
-                        count = reNorloge.ReplaceAll(&message, "<a>\\0</a>");
-                        count = count;
+                        //size_t count = reTotoz.ReplaceAll(&message, "<img src='http://totoz.eu/img/\\0'>");
+                        //count = reNorloge.ReplaceAll(&message, "<a>\\0</a>");
+                        //count = count;
 
-                        if (reTotoz.GetMatch(message, 0) == "totoz")
-                        {
-                            count = count;
-                        }
+                        //if (reTotoz.GetMatch(message, 0) == "totoz")
+                        //{
+                            //count = count;
+                        //}
                     }
                     else if (post->GetName() == "login")
                     {

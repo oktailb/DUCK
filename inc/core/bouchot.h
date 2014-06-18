@@ -23,13 +23,14 @@ public:
     ~bouchot();
 
     void refresh();
-    uint64_t getNextPost(t_post &ret);
+    int64_t getNextPost(t_post &ret);
     inline wxString fg() {return m_sFgColor;}
     inline wxString bg() {return m_sBgColor;}
     inline wxString clock() {return m_sClockColor;}
     inline wxString norloge() {return m_sNorlogeColor;}
     inline wxString login() {return m_sLoginColor;}
     inline wxString answer() {return m_sAnswerColor;}
+    inline wxString name() {return m_sName;}
 
 private:
 

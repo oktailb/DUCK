@@ -3,12 +3,13 @@
 
 
 #include <wx/wx.h>
-
+#include <vector>
+#include <core/bouchot.h>
 
 class sideMMI
 {
 public:
-    sideMMI(wxFrame *theParent);
+    sideMMI(wxFrame *theParent, std::vector<bouchot*> vBouchots);
     ~sideMMI();
 
     void            refreshMMI();
@@ -17,8 +18,9 @@ public:
     wxBoxSizer *    getPanel();
 
 private:
-    wxBoxSizer *    m_pPanel;
-    wxFrame *       m_pParent;
+    wxBoxSizer *            m_pPanel;
+    wxFrame *               m_pParent;
+    std::vector<bouchot*>   m_vBouchots;
 
     void            createPanel();
 };

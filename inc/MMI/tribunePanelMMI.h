@@ -3,7 +3,8 @@
 
 
 #include <wx/wx.h>
-
+#include <vector>
+#include <core/bouchot.h>
 
 class tribunePanelMMI
 {
@@ -13,7 +14,7 @@ class tribunePanelMMI
     };
 
 public:
-    tribunePanelMMI(wxFrame *theParent);
+    tribunePanelMMI(wxFrame *theParent, std::vector<bouchot *> vBouchots);
     ~tribunePanelMMI();
 
     void            refreshMMI();
@@ -22,8 +23,10 @@ public:
     wxBoxSizer *    getPanel();
 
 private:
-    wxBoxSizer *    m_pPanel;
-    wxFrame *       m_pParent;
+    wxBoxSizer *            m_pPanel;
+    wxFrame *               m_pParent;
+    wxCheckListBox *        m_pListeTribunes;
+    std::vector<bouchot *>  m_vBouchots;
 
     void            createPanel();
 };

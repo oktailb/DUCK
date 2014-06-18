@@ -1,9 +1,10 @@
 #include "MMI/tribunePanelMMI.h"
 
-tribunePanelMMI::tribunePanelMMI(wxFrame *theParent)
+tribunePanelMMI::tribunePanelMMI(wxFrame *theParent, std::vector<bouchot *> vBouchots)
 {
     m_pPanel = NULL;
     m_pParent = theParent;
+    m_vBouchots = vBouchots;
 }
 
 wxBoxSizer *tribunePanelMMI::getPanel()
@@ -16,10 +17,19 @@ wxBoxSizer *tribunePanelMMI::getPanel()
 void tribunePanelMMI::createPanel()
 {
     m_pPanel = new wxBoxSizer(wxVERTICAL);
-    wxListBox *pListeTribunes = new wxListBox(m_pParent, ID_LISTE_BOUCHOTS);
+    m_pListeTribunes = new wxCheckListBox(m_pParent, ID_LISTE_BOUCHOTS, wxDefaultPosition, wxDefaultSize, 0, NULL,
+                                          wxLB_MULTIPLE | wxLB_EXTENDED | wxLB_NEEDED_SB/* | wxLB_SORT*/);
 
-    pListeTribunes->Insert("dlfp", 0);
-    pListeTribunes->Insert("euromussels", 1);
-    pListeTribunes->Insert("moules", 2);
-    m_pPanel->Add(pListeTribunes, 0, wxALL | wxEXPAND, 2);
+    int i = 0;
+    for (std::vector<bouchot *>::iterator it = m_vBouchots.begin() ;
+         it != m_vBouchots.end() ;
+         it++)
+    {
+        m_pListeTribunes->Insert((*it)->name(), i++);
+    }
+    for (unsigned int i = 0 ; i < m_vBouchots.size() ; i++)
+    {
+        m_pListeTribunes->Check(i);
+    }
+    m_pPanel->Add(m_pListeTribunes, 0, wxALL | wxEXPAND, 2);
 }

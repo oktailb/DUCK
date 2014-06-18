@@ -21,17 +21,21 @@ flowMMI::flowMMI(wxFrame *theParent)
         bouchot * tmp = new bouchot(bouchots[i]);
         m_vBouchots.push_back(tmp);
     }
+    m_lastInsert = m_mData.begin();
 }
 
 void flowMMI::refreshMMI()
 {
+    static bool firstTime = true;
     for (u_int32_t i = 0 ; i < m_vBouchots.size() ; ++i)
     {
         m_vBouchots[i]->refresh();
         bouchot::t_post next;
-        u_int64_t id = 0;
-        while((id = m_vBouchots[i]->getNextPost(next)) != 0)
-            addPost(id, next.norloge, (next.name.size() == 0)?next.info:next.name, next.post,
+        int64_t id = 0;
+        id = m_vBouchots[i]->getNextPost(next);
+        while(id > 0)
+        {
+            addPost(id, next.norloge, (next.name.size() == 0)?("<i>" + next.info + "</i>"):("<b>" + next.name + "</b>"), next.post,
                     m_vBouchots[i]->fg(),
                     m_vBouchots[i]->bg(),
                     m_vBouchots[i]->clock(),
@@ -39,7 +43,26 @@ void flowMMI::refreshMMI()
                     m_vBouchots[i]->login(),
                     m_vBouchots[i]->answer()
                     );
+            id = m_vBouchots[i]->getNextPost(next);
+        }
     }
+
+    if (firstTime)
+    {
+        m_lastInsert = m_mData.begin();
+        firstTime = false;
+    }
+    while (m_lastInsert != m_mData.end())
+    {
+        wxString data = wxString("<table border=0 cellspacing=0 cellpadding=0 bgcolor='" + m_vBouchots[0]->bg() + "'><tr>")
+                        + "<td><font color='" + m_vBouchots[0]->norloge() + "'>"
+                        + "<b>[" + m_lastInsert->first + "]</b>"
+                        + *(m_lastInsert->second)
+                        + "</tr></table>";
+        m_pPalmipede->Insert(data, 0);
+        m_lastInsert++;
+    }
+
     m_pPalmipede->Refresh();
 }
 
@@ -56,18 +79,36 @@ void flowMMI::addPost(uint64_t id,
                       wxString content,
                       wxString fg, wxString bg, wxString clock, wxString norloge, wxString login, wxString answer)
 {
-    m_pPalmipede->Insert(wxString("<table border=0 cellspacing=0 cellpadding=0 bgcolor='" + bg + "'><tr>")
-                         + "<td><font color='" + norloge + "'>"
-                         + "<b>[" + date.substr(8, 2) + ":" + date.substr(10, 2) + ":" + date.substr(12, 2) + "]</b>"
-                         + "</font></td>"
-                         + "<td width=100><font color='" + login + "'>"
-                         + " : "
-                         + autor
-                         + "</font></td><td width='100%'><font color='" + fg + "'>- "
-                         + content
-                         + "</font></td>"
-                         + "</tr></table>",
-                         0);
+    wxString key = date.substr(8, 2) + ":" + date.substr(10, 2) + ":" + date.substr(12, 2);
+    wxString postData = "<td width=200 bgcolor='" + bg + "'><font color='" + login + "'>"
+                    + " : "
+                    + autor
+                    + "</font></td>"
+                    + "<td width='100%' bgcolor='" + bg + "'><font color='" + fg + "'>- "
+                    + content
+                    + "</font></td>";
+
+    uint32_t level = 0;
+    wxString keyOrig = key;
+    while ((m_mData.find(key) != m_mData.end()) && (m_mData[key]->compare(postData) == 0))
+    {
+        level++;
+        if (level == 1)
+            key = keyOrig + "²";
+        if (level == 2)
+            key = keyOrig + "³";
+        if (level > 2)
+            key = keyOrig + "^" + wxString::FromCDouble(level);
+    }
+    wxString *dataCopy = new wxString(postData);
+    if (dataCopy == NULL)
+        return;
+    m_mData.insert(std::make_pair<wxString, wxString*>(key.Clone(), dataCopy));
+}
+
+std::vector<bouchot *> flowMMI::getBouchots() const
+{
+    return m_vBouchots;
 }
 
 void flowMMI::OnLink(wxHtmlLinkEvent &event)

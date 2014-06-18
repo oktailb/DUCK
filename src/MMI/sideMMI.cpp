@@ -4,10 +4,11 @@
 #include "MMI/filtersPanelMMI.h"
 #include "MMI/pluginsPanelMMI.h"
 
-sideMMI::sideMMI(wxFrame *theParent)
+sideMMI::sideMMI(wxFrame *theParent, std::vector<bouchot *> vBouchots)
 {
     m_pPanel = NULL;
     m_pParent = theParent;
+    m_vBouchots = vBouchots;
 }
 
 wxBoxSizer *sideMMI::getPanel()
@@ -21,7 +22,7 @@ void sideMMI::createPanel()
 {
     m_pPanel = new wxBoxSizer(wxVERTICAL);
     controlPanelMMI *    configPanel = new controlPanelMMI(m_pParent);
-    tribunePanelMMI *   tribunePanel = new tribunePanelMMI(m_pParent);
+    tribunePanelMMI *   tribunePanel = new tribunePanelMMI(m_pParent, m_vBouchots);
     filtersPanelMMI *   filtersPanel = new filtersPanelMMI(m_pParent);
     pluginsPanelMMI *   pluginsPanel = new pluginsPanelMMI(m_pParent);
 
