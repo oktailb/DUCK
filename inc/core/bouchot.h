@@ -33,7 +33,7 @@ public:
     inline wxString name() {return m_sName;}
 
 private:
-
+    bool firstCall;
     std::map<uint64_t, t_post> m_mData;
     std::map<uint64_t, t_post>::iterator m_iNext;
     std::map<uint64_t, t_post>::iterator m_iLastShow;

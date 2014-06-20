@@ -24,6 +24,7 @@ bouchot::bouchot(wxString configFile)
     m_sClockColor   = ColorsNode->GetAttribute("clock");
     m_sNorlogeColor = ColorsNode->GetAttribute("norloge");
     m_sLoginColor   = ColorsNode->GetAttribute("login");
+    firstCall = true;
 }
 
 bouchot::~bouchot()
@@ -46,7 +47,6 @@ int64_t bouchot::getNextPost(t_post &ret)
 
 void bouchot::refresh()
 {
-    static bool firstCall = true;
     wxURL * myUrl = new wxURL();
     myUrl->SetURL("http://" + m_sBaseUrl + "/" +  m_sBackendUrl);
 

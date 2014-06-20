@@ -27,7 +27,7 @@ void MainWindow::createPanel()
     m_pFlow       = new flowMMI(this);
     m_pSide       = new sideMMI(this, m_pFlow->getBouchots());
 
-    m_pTimer->Start(30000);
+    m_pTimer->Start(10000);
     UpSizer->Add(m_pSide->getPanel(), 1, wxALL | wxEXPAND, 2);
     UpSizer->Add(m_pFlow->getPanel(), 42, wxALL | wxEXPAND, 2);
     MainSizer->Add(UpSizer, 42, wxALL | wxEXPAND, 2);

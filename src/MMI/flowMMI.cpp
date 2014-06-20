@@ -27,7 +27,7 @@ flowMMI::flowMMI(wxFrame *theParent)
 void flowMMI::refreshMMI()
 {
     static bool firstTime = true;
-    for (u_int32_t i = 0 ; i < m_vBouchots.size() ; ++i)
+    for (u_int32_t i = 0 ; i < m_vBouchots.size() ; i++)
     {
         m_vBouchots[i]->refresh();
         bouchot::t_post next;
@@ -52,17 +52,19 @@ void flowMMI::refreshMMI()
         m_lastInsert = m_mData.begin();
         firstTime = false;
     }
+    m_lastInsert++;
     while (m_lastInsert != m_mData.end())
     {
+        wxString date = m_lastInsert->first.substr(8, 2) + ":" + m_lastInsert->first.substr(10, 2) + ":" + m_lastInsert->first.substr(12, 2);
         wxString data = wxString("<table border=0 cellspacing=0 cellpadding=0 bgcolor='" + m_vBouchots[0]->bg() + "'><tr>")
                         + "<td><font color='" + m_vBouchots[0]->norloge() + "'>"
-                        + "<b>[" + m_lastInsert->first + "]</b>"
+                        + "<b>[" + date + "]</b>"
                         + *(m_lastInsert->second)
                         + "</tr></table>";
         m_pPalmipede->Insert(data, 0);
         m_lastInsert++;
     }
-
+    m_lastInsert--;
     m_pPalmipede->Refresh();
 }
 
@@ -79,7 +81,7 @@ void flowMMI::addPost(uint64_t id,
                       wxString content,
                       wxString fg, wxString bg, wxString clock, wxString norloge, wxString login, wxString answer)
 {
-    wxString key = date.substr(8, 2) + ":" + date.substr(10, 2) + ":" + date.substr(12, 2);
+    wxString key = date;
     wxString postData = "<td width=200 bgcolor='" + bg + "'><font color='" + login + "'>"
                     + " : "
                     + autor

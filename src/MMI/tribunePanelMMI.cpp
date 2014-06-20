@@ -26,6 +26,7 @@ void tribunePanelMMI::createPanel()
          it++)
     {
         m_pListeTribunes->Insert((*it)->name(), i++);
+//        m_pListeTribunes->get
     }
     for (unsigned int i = 0 ; i < m_vBouchots.size() ; i++)
     {
