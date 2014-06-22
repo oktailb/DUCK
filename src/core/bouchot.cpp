@@ -1,4 +1,5 @@
 #include "core/bouchot.h"
+#include <curl/curl.h>
 
 bouchot::bouchot(wxString configFile)
 {
@@ -8,7 +9,7 @@ bouchot::bouchot(wxString configFile)
     wxXmlNode * UrlNode         = TribuneNode->GetChildren();
     wxXmlNode * IdentityNode    = UrlNode->GetNext();
     wxXmlNode * ColorsNode      = IdentityNode->GetNext();
-    bool ok = m_ReTotoz.Compile("\\[\\:([a-zA-Z0-9_]*)\\]");
+    bool ok = m_ReTotoz.Compile("\\[\\:([a-zA-Z0-9\\ _]*)\\]");
     //m_ReNorloge.Compile("([01]?[0-9]|2[0-3]:[0-5][0-9]:[0-5][0-9]?\\^[0-9]|¹|²|³?)");
 //    m_ReNorloge.Compile("{{{ (([01]?[0-9])|(2[0-3])):[0-5][0-9](:[0-5][0-9])?(\\^[0-9]|¹|²|³)?(@[0-9A-Za-z]+)? }}}");
     ok = m_ReNorloge.Compile("([0-2]{1}[0-9]{1}:[0-5]{1}[0-9]{1}:[0-5]{1}[0-9]{1})");
@@ -45,6 +46,46 @@ int64_t bouchot::getNextPost(t_post &ret)
     m_iNext->second.used = true;
     ret = m_iNext->second;
     return m_iNext->first;
+}
+
+void bouchot::sendPost(wxString connerie)
+{
+    CURL *                  curl;
+    CURLcode                res;
+    struct curl_httppost *  formpost=NULL;
+    struct curl_httppost *  lastptr=NULL;
+//    struct curl_slist *     headerlist=NULL;
+    //static const char       buf[] = "Expect:";
+
+    curl_global_init(CURL_GLOBAL_ALL);
+
+    char * data = strdup(connerie.ToStdString().c_str());
+    curl_formadd(&formpost,
+                 &lastptr,
+                 CURLFORM_COPYNAME, "message",
+                 CURLFORM_COPYCONTENTS, data,
+                 CURLFORM_END);
+
+
+    curl = curl_easy_init();
+  //  headerlist = curl_slist_append(headerlist, buf);
+    if(curl)
+    {
+        char * url = strdup(wxString(m_sBaseUrl + "/" + m_sPostUrl).ToStdString().c_str());
+        char * ua = strdup(m_sUserAgent.ToStdString().c_str());
+        curl_easy_setopt(curl, CURLOPT_URL, url);
+        curl_easy_setopt(curl, CURLOPT_HTTPPOST, formpost);
+         curl_easy_setopt(curl, CURLOPT_USERAGENT, ua);
+        res = curl_easy_perform(curl);
+        if(res != CURLE_OK)
+            fprintf(stderr, "curl_easy_perform() failed: %s\n",
+        curl_easy_strerror(res));
+        curl_easy_cleanup(curl);
+        curl_formfree(formpost);
+        //free(url);
+        //free(ua);
+    //    curl_slist_free_all (headerlist);
+    }
 }
 
 void bouchot::refresh()

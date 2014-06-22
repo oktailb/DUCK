@@ -26,8 +26,9 @@ void MainWindow::createPanel()
 
     wxBoxSizer *    MainSizer   = new wxBoxSizer(wxVERTICAL);
     wxBoxSizer *    UpSizer     = new wxBoxSizer(wxHORIZONTAL);
-    m_pEditForm   = new editFormMMI(this);
     m_pFlow       = new flowMMI(this);
+    m_pEditForm   = new editFormMMI(this, m_pFlow);
+    m_pFlow->setEditor(m_pEditForm);
     m_pSide       = new sideMMI(this, m_pFlow->getBouchots());
 
     m_pTimer->Start(15000);

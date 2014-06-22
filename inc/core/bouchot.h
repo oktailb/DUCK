@@ -26,8 +26,10 @@ public:
     bouchot(wxString configFile);
     ~bouchot();
 
-    void refresh();
-    int64_t getNextPost(t_post &ret);
+    void            refresh();
+    int64_t         getNextPost(t_post &ret);
+    void            sendPost(wxString connerie);
+
     inline wxString fg() {return m_sFgColor;}
     inline wxString bg() {return m_sBgColor;}
     inline wxString clock() {return m_sClockColor;}

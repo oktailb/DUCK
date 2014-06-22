@@ -7,6 +7,7 @@
 #include "util/iniManager.h"
 #include "core/bouchot.h"
 #include <vector>
+#include "MMI/editFormMMI.h"
 
 class flowMMI
 {
@@ -30,15 +31,19 @@ public:
                             wxString fg, wxString bg, wxString clock, wxString norloge, wxString login, wxString answer);
     std::vector<bouchot *> getBouchots() const;
 
+    void setEditor(editFormMMI *pEditor);
+
 private:
     wxBoxSizer *                                        m_pPanel;
     wxFrame *                                           m_pParent;
     wxSimpleHtmlListBox *                               m_pPalmipede;
     u_int64_t                                           m_i64LastId;
     iniManager *                                        m_pIniManager;
-    std::map<wxString, wxString*>                        m_mData;
+    std::map<wxString, wxString*>                       m_mData;
     std::vector<bouchot*>                               m_vBouchots;
-    std::map<wxString, wxString*>::iterator              m_lastInsert;
+    std::map<wxString, wxString*>::iterator             m_lastInsert;
+    editFormMMI *                                       m_pEditor;
+
 
     void            createPanel();
     void            OnLink(wxHtmlLinkEvent &event);

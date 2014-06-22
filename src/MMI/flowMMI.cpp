@@ -58,14 +58,14 @@ void flowMMI::refreshMMI()
         wxString date = m_lastInsert->first.substr(8, 2) + ":" + m_lastInsert->first.substr(10, 2) + ":" + m_lastInsert->first.substr(12, 2);
         wxString data = wxString("<table border=0 cellspacing=0 cellpadding=0 bgcolor='" + m_vBouchots[0]->bg() + "'><tr>")
                         + "<td><font color='" + m_vBouchots[0]->norloge() + "'>"
-                        + "<b>[" + date + "]</b>"
+                        + "<a href='norlogeref_" + date + "'><b>[" + date + "]</b></a>"
                         + *(m_lastInsert->second)
                         + "</tr></table>";
         m_pPalmipede->Append(data);
         m_lastInsert++;
     }
     m_lastInsert--;
-    m_pPalmipede->ScrollToRow(m_pPalmipede->GetItemCount() - 1);
+    m_pPalmipede->ScrollToRow(m_pPalmipede->GetItemCount());
     m_pPalmipede->Refresh();
 }
 
@@ -114,6 +114,12 @@ std::vector<bouchot *> flowMMI::getBouchots() const
     return m_vBouchots;
 }
 
+void flowMMI::setEditor(editFormMMI *pEditor)
+{
+    m_pEditor = pEditor;
+}
+
+
 void flowMMI::OnLink(wxHtmlLinkEvent &event)
 {
     wxString target = event.GetLinkInfo().GetHref();
@@ -129,7 +135,12 @@ void flowMMI::OnNorloge(wxHtmlCellEvent &event)
         id = event.GetCell()->GetLink()->GetHref();
         if (id.BeforeFirst('_') == "norloge")
         {
-            id = id;
+            wxString ref = id.AfterFirst('_');
+        }
+        else if (id.BeforeFirst('_') == "norlogeref")
+        {
+            wxString ref = id.AfterFirst('_');
+            m_pEditor->getTheConnerie()->AppendText(ref);
         }
         else
             event.Skip();
@@ -139,7 +150,7 @@ void flowMMI::OnNorloge(wxHtmlCellEvent &event)
         id = event.GetCell()->GetLink()->GetHref();
         if (id.BeforeFirst('_') == "norloge")
         {
-            id = id;
+            wxString ref = id.AfterFirst('_');
         }
         else
             event.Skip();

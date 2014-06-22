@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tribune name="dlfp">
-	<url base="linuxfr.org" backend="board/index.xml" post="board/index.xml" />
-	<identity login="oktail" cookie="oktail" useragent="" />
+	<url base="linuxfr.org" backend="board/index.xml" post="board" data="board[message]=" />
+	<identity login="oktail" cookie="oktail" useragent="DUCK (Da Ultimate Coin Koin)" />
 	<colors bg="#00AA00" fg="#000000" clock="#0000CC" norloge="#000000" login="#AA4488" answer="#FF0000" />
 	<parsingScheme target="id">board.post:id</parsingScheme>
 	<parsingScheme target="date">board.post:time</parsingScheme>
