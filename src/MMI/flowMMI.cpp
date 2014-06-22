@@ -61,10 +61,11 @@ void flowMMI::refreshMMI()
                         + "<b>[" + date + "]</b>"
                         + *(m_lastInsert->second)
                         + "</tr></table>";
-        m_pPalmipede->Insert(data, 0);
+        m_pPalmipede->Append(data);
         m_lastInsert++;
     }
     m_lastInsert--;
+    m_pPalmipede->ScrollToRow(m_pPalmipede->GetItemCount() - 1);
     m_pPalmipede->Refresh();
 }
 
@@ -119,12 +120,42 @@ void flowMMI::OnLink(wxHtmlLinkEvent &event)
     wxLaunchDefaultBrowser(target);
 }
 
+void flowMMI::OnNorloge(wxHtmlCellEvent &event)
+{
+    wxString id;
+
+    if (event.GetEventType() == wxEVT_HTML_CELL_CLICKED)
+    {
+        id = event.GetCell()->GetLink()->GetHref();
+        if (id.BeforeFirst('_') == "norloge")
+        {
+            id = id;
+        }
+        else
+            event.Skip();
+    }
+    else if (event.GetEventType() == wxEVT_HTML_CELL_HOVER)
+    {
+        id = event.GetCell()->GetLink()->GetHref();
+        if (id.BeforeFirst('_') == "norloge")
+        {
+            id = id;
+        }
+        else
+            event.Skip();
+    }
+    else
+        event.Skip();
+}
+
 void flowMMI::createPanel()
 {
     m_pPanel = new wxBoxSizer(wxVERTICAL);
     m_pPalmipede = new wxSimpleHtmlListBox(m_pParent, ID_FLOW);
     m_pPalmipede->SetMargins(-2, -2);
     m_pPanel->Add(m_pPalmipede, 1, wxALL | wxEXPAND, 0);
-    m_pPalmipede->Bind(wxEVT_HTML_LINK_CLICKED, &flowMMI::OnLink, this, ID_FLOW);
+    m_pPalmipede->Bind(wxEVT_HTML_LINK_CLICKED  , &flowMMI::OnLink, this, ID_FLOW);
+    //m_pPalmipede->Bind(wxEVT_HTML_CELL_HOVER    , &flowMMI::OnNorloge, this, ID_FLOW);
+    m_pPalmipede->Bind(wxEVT_HTML_CELL_CLICKED  , &flowMMI::OnNorloge, this, ID_FLOW);
     refreshMMI();
 }

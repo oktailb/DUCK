@@ -1,6 +1,4 @@
 #include "core/bouchot.h"
-#include <wx/url.h>
-#include <wx/regex.h>
 
 bouchot::bouchot(wxString configFile)
 {
@@ -10,6 +8,10 @@ bouchot::bouchot(wxString configFile)
     wxXmlNode * UrlNode         = TribuneNode->GetChildren();
     wxXmlNode * IdentityNode    = UrlNode->GetNext();
     wxXmlNode * ColorsNode      = IdentityNode->GetNext();
+    bool ok = m_ReTotoz.Compile("\\[\\:([a-zA-Z0-9_]*)\\]");
+    //m_ReNorloge.Compile("([01]?[0-9]|2[0-3]:[0-5][0-9]:[0-5][0-9]?\\^[0-9]|¹|²|³?)");
+//    m_ReNorloge.Compile("{{{ (([01]?[0-9])|(2[0-3])):[0-5][0-9](:[0-5][0-9])?(\\^[0-9]|¹|²|³)?(@[0-9A-Za-z]+)? }}}");
+    ok = m_ReNorloge.Compile("([0-2]{1}[0-9]{1}:[0-5]{1}[0-9]{1}:[0-5]{1}[0-9]{1})");
 
     m_sName         = TribuneNode->GetAttribute("name");
     m_sBaseUrl      = UrlNode->GetAttribute("base");
@@ -75,25 +77,43 @@ void bouchot::refresh()
                     if (post->GetName() == "info")
                     {
                         info = post->GetNodeContent();
-                        //post->GetAttribute();
                     }
                     else if (post->GetName() == "message")
                     {
                         message = post->GetNodeContent();
+                        while (m_ReTotoz.Matches(message))
+                        {
+                            wxString tmp = m_ReTotoz.GetMatch(message, 1);
+                            wxString source = "http://totoz.eu/img/" + tmp;
+                            wxString dest = "/tmp/totoz/" + tmp;
+                            if (!wxFileExists(dest))
+                            {
+                                wxURL * nimage = new wxURL(source);
+                                wxInputStream *nimageStream = nimage->GetInputStream();
 
-                        //wxRegEx reTotoz;
-                        //bool ok = reTotoz.Compile("[:([a-zA-Z0-9]*)]");
-                        //wxRegEx reNorloge;
-                        //ok = reNorloge.Compile("{{{ (([01]?[0-9])|(2[0-3])):[0-5][0-9](:[0-5][0-9])?(\^[0-9]|¹|²|³)?(@[0-9A-Za-z]+)? }}}");
-
-                        //size_t count = reTotoz.ReplaceAll(&message, "<img src='http://totoz.eu/img/\\0'>");
-                        //count = reNorloge.ReplaceAll(&message, "<a>\\0</a>");
-                        //count = count;
-
-                        //if (reTotoz.GetMatch(message, 0) == "totoz")
-                        //{
+                                if (nimage->GetError() != wxURL_PROTOERR)
+                                {
+                                    if (!wxDir::Exists("/tmp/totoz"))
+                                    {
+                                        wxDir::Make("/tmp/totoz");
+                                    }
+                                    wxFile destFile;
+                                    destFile.Create(dest);
+                                    void * buffer = malloc(nimageStream->GetSize());
+                                    nimageStream->Read(buffer, nimageStream->GetSize());
+                                    destFile.Write(buffer, nimageStream->GetSize());
+                                    destFile.Close();
+                                    free(buffer);
+                                }
+                            }
+                            m_ReTotoz.ReplaceFirst(&message, "<img src='/tmp/totoz/\\1'>");
+                        }
+                        if (m_ReNorloge.Matches(message))
+                        {
+                            //wxString test = m_ReTotoz.GetMatch(message, 1);
+                            size_t count = m_ReNorloge.ReplaceAll(&message, "<a href='norloge_\\1'>\\1</a>");
                             //count = count;
-                        //}
+                        }
                     }
                     else if (post->GetName() == "login")
                     {

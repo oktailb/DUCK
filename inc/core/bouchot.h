@@ -6,6 +6,10 @@
 #include <stdint.h>
 #include <wx/xml/xml.h>
 #include <wx/colour.h>
+#include <wx/url.h>
+#include <wx/regex.h>
+#include <wx/file.h>
+#include <wx/dir.h>
 
 class bouchot
 {
@@ -34,6 +38,8 @@ public:
 
 private:
     bool firstCall;
+    wxRegEx m_ReTotoz;
+    wxRegEx m_ReNorloge;
     std::map<uint64_t, t_post> m_mData;
     std::map<uint64_t, t_post>::iterator m_iNext;
     std::map<uint64_t, t_post>::iterator m_iLastShow;

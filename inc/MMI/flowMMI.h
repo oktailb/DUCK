@@ -42,6 +42,7 @@ private:
 
     void            createPanel();
     void            OnLink(wxHtmlLinkEvent &event);
+    void            OnNorloge(wxHtmlCellEvent &event);
     void            updateBouchot(wxString base, wxString resource);
 
 };

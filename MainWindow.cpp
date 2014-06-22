@@ -2,6 +2,7 @@
 #include "MMI/editFormMMI.h"
 #include "MMI/flowMMI.h"
 #include "MMI/sideMMI.h"
+#include <wx/animate.h>
 
 BEGIN_EVENT_TABLE(MainWindow, wxFrame)
     EVT_TIMER(ID_TIMER, MainWindow::OnTimerTimeout)
@@ -21,13 +22,15 @@ void MainWindow::OnTimerTimeout(wxTimerEvent& event)
 
 void MainWindow::createPanel()
 {
+    wxInitAllImageHandlers();
+
     wxBoxSizer *    MainSizer   = new wxBoxSizer(wxVERTICAL);
     wxBoxSizer *    UpSizer     = new wxBoxSizer(wxHORIZONTAL);
     m_pEditForm   = new editFormMMI(this);
     m_pFlow       = new flowMMI(this);
     m_pSide       = new sideMMI(this, m_pFlow->getBouchots());
 
-    m_pTimer->Start(10000);
+    m_pTimer->Start(15000);
     UpSizer->Add(m_pSide->getPanel(), 1, wxALL | wxEXPAND, 2);
     UpSizer->Add(m_pFlow->getPanel(), 42, wxALL | wxEXPAND, 2);
     MainSizer->Add(UpSizer, 42, wxALL | wxEXPAND, 2);
