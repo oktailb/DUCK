@@ -140,7 +140,8 @@ void flowMMI::OnNorloge(wxHtmlCellEvent &event)
         else if (id.BeforeFirst('_') == "norlogeref")
         {
             wxString ref = id.AfterFirst('_');
-            m_pEditor->getTheConnerie()->AppendText(ref);
+            m_pEditor->getTheConnerie()->AppendText(ref + " ");
+            m_pEditor->getTheConnerie()->SetFocus();
         }
         else
             event.Skip();

@@ -50,6 +50,7 @@ private:
     wxString        m_sBaseUrl;
     wxString        m_sBackendUrl;
     wxString        m_sPostUrl;
+    wxString        m_sPostData;
     wxString        m_sLogin;
     wxString        m_sCookies;
     wxString        m_sUserAgent;
