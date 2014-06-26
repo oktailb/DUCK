@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tribune name="euromussels">
-	<url base="euromussels.eu" backend="?q=tribune.xml" post="?q=tribune/post" data="message="/>
-	<identity login="oktail" cookie="oktail" useragent="DUCK (Da Ultimate Coin Koin)" />
+	<url base="euromussels.eu" backend="?q=tribune.xml" post="?q=tribune/post" data="message" />
+	<identity login="oktail" cookie="SESSbc4ddac04badaa22a64c8db8e2194689=34j6228qngu4te77pb56u32qt1; expires=Wed, 13-May-2020 07:43:11 GMT; path=/; domain=.euromussels.eu" useragent="DUCK (Da Ultimate Coin Koin)" />
 	<colors bg="#008800" fg="#000000" clock="#0000CC" norloge="#000000" login="#AA4488" answer="#FF0000" />
 	<parsingScheme target="id">board.post:id</parsingScheme>
 	<parsingScheme target="date">board.post:time</parsingScheme>

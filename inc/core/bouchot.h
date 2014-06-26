@@ -11,6 +11,8 @@
 #include <wx/file.h>
 #include <wx/dir.h>
 
+#include "util/iniManager.h"
+
 class bouchot
 {
 public:
@@ -59,6 +61,9 @@ private:
     wxString        m_sAnswerColor;
     wxString        m_sNorlogeColor;
     wxString        m_sLoginColor;
+
+    iniManager *                                        m_pIniManager;
+
 };
 
 #endif
