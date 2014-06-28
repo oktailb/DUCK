@@ -4,7 +4,6 @@
 #include <wx/wx.h>
 #include <stdint.h>
 #include <wx/htmllbox.h>
-#include "util/iniManager.h"
 #include "core/bouchot.h"
 #include <vector>
 #include "MMI/editFormMMI.h"
@@ -38,7 +37,6 @@ private:
     wxFrame *                                           m_pParent;
     wxSimpleHtmlListBox *                               m_pPalmipede;
     u_int64_t                                           m_i64LastId;
-    iniManager *                                        m_pIniManager;
     std::map<wxString, wxString*>                       m_mData;
     std::vector<bouchot*>                               m_vBouchots;
     std::map<wxString, wxString*>::iterator             m_lastInsert;

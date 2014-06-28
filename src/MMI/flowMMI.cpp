@@ -11,9 +11,7 @@ flowMMI::flowMMI(wxFrame *theParent)
     m_pPanel = NULL;
     m_pParent = theParent;
     m_i64LastId = 0;
-    m_pIniManager = new iniManager("./res/conf/config.ini");
-    wxString proxy = m_pIniManager->getParam("proxy");
-    wxURL::SetDefaultProxy(proxy);
+
     wxArrayString bouchots;
     wxDir::GetAllFiles("./res/conf/", &bouchots, "*.xml");
     for (u_int32_t i = 0 ; i < bouchots.size() ; ++i)
